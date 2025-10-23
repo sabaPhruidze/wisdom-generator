@@ -6,10 +6,11 @@ import { ThemedView } from "./themed-view";
 interface AdviceCardProps {
   advice: string;
   isLoading: boolean;
+  error: string | null;
 }
 
 const AdviceCard = (props: AdviceCardProps) => {
-  const { isLoading, advice } = props;
+  const { isLoading, advice, error } = props;
   return (
     <ThemedView style={styles.container}>
       <Image
@@ -23,6 +24,10 @@ const AdviceCard = (props: AdviceCardProps) => {
           style={{ marginTop: 16 }}
           color="#007AFF"
         />
+      ) : error ? (
+        <ThemedText type="title" style={styles.errorText}>
+          {error}
+        </ThemedText>
       ) : (
         <ThemedText type="title" style={styles.adviceText}>
           {advice}
@@ -50,5 +55,10 @@ const styles = StyleSheet.create({
   adviceText: {
     textAlign: "center",
     marginTop: 16,
+  },
+  errorText: {
+    textAlign: "center",
+    marginTop: 16,
+    color: "red",
   },
 });

@@ -6,13 +6,19 @@ import AdviceCard from "../../components/adviceCard";
 export default function HomeScreen() {
   const [advice, setAdvice] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchAdvice = () => {
     setIsLoading(true);
+    setError(null);
     fetch(`https://api.adviceslip.com/advice?cacheBuster=${Date.now()}`)
       .then((response) => response.json())
       .then((data) => setAdvice(data.slip.advice))
-      .catch((error) => console.error(error))
+      .catch((error) => () => {
+        console.error(error);
+        setAdvice("");
+        setError("კავშირის შეცდომა. სცადეთ თავიდან.");
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -23,13 +29,13 @@ export default function HomeScreen() {
   }, []);
   return (
     <View style={styles.container}>
-      <AdviceCard advice={advice} isLoading={isLoading} />
+      <AdviceCard advice={advice} isLoading={isLoading} error={error} />
       <Pressable
         onPress={fetchAdvice}
         disabled={isLoading}
         style={[styles.button, isLoading && styles.buttonDisabled]}
       >
-        <ThemedText style={styles.buttonText}>ახალი რჩევა</ThemedText>
+        <ThemedText style={styles.buttonText}>New advice</ThemedText>
       </Pressable>
     </View>
   );
