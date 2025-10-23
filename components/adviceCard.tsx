@@ -30,13 +30,11 @@ export default AdviceCard;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     padding: 16,
   },
   image: {
     width: Dimensions.get("window").width,
+    height: undefined,
     aspectRatio: 1,
   },
   text: {
