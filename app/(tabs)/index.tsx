@@ -9,7 +9,7 @@ export default function HomeScreen() {
 
   const fetchAdvice = () => {
     setIsLoading(true);
-    fetch("https://api.adviceslip.com/advice")
+    fetch(`https://api.adviceslip.com/advice?cacheBuster=${Date.now()}`)
       .then((response) => response.json())
       .then((data) => setAdvice(data.slip.advice))
       .catch((error) => console.error(error))
