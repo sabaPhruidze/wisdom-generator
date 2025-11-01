@@ -1,14 +1,32 @@
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 const FavoritesScreen = () => {
   interface SavedAdvices {
-    id: string;
+    id: number;
     advice: string;
   }
-  const savedAdvices: SavedAdvices[] = [];
+  const [savedAdvices, setSavedAdvices] = useState<SavedAdvices[]>([]);
+
+  const loadFavorites = async () => {
+    try {
+      const existingFavorites = await AsyncStorage.getItem("favorites");
+      const favorites = existingFavorites ? JSON.parse(existingFavorites) : [];
+      setSavedAdvices(favorites);
+    } catch (e) {
+      console.error("Failed to load favorites", e);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadFavorites();
+    }, [])
+  );
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="title" style={styles.title}>
@@ -16,7 +34,7 @@ const FavoritesScreen = () => {
       </ThemedText>
       <FlatList
         data={savedAdvices}
-        keyExtractor={(item) => item.id} //returns string
+        keyExtractor={(item) => item.id.toString()} //returns string
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <ThemedText>{item.advice}</ThemedText>
@@ -40,7 +58,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    marginBottom: 16,
+    marginVertical: 24,
     textAlign: "center",
   },
   itemContainer: {

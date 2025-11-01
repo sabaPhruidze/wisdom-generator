@@ -1,5 +1,11 @@
 import React from "react";
-import { ActivityIndicator, Image, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+} from "react-native";
 import { ThemedText } from "./themed-text";
 import { ThemedView } from "./themed-view";
 
@@ -7,10 +13,11 @@ interface AdviceCardProps {
   advice: string;
   isLoading: boolean;
   error: string | null;
+  onSave: () => void; //ველოდები onSave prop-ს, რომელიც არის ფუნქცია"
 }
 
 const AdviceCard = (props: AdviceCardProps) => {
-  const { isLoading, advice, error } = props;
+  const { isLoading, advice, error, onSave } = props;
   return (
     <ThemedView style={styles.container}>
       <Image
@@ -29,9 +36,14 @@ const AdviceCard = (props: AdviceCardProps) => {
           {error}
         </ThemedText>
       ) : (
-        <ThemedText type="title" style={styles.adviceText}>
-          {advice}
-        </ThemedText>
+        <>
+          <ThemedText type="title" style={styles.adviceText}>
+            {advice}
+          </ThemedText>
+          <Pressable onPress={onSave} style={styles.saveButton}>
+            <Text style={styles.saveButtonText}>Save the Advice</Text>
+          </Pressable>
+        </>
       )}
     </ThemedView>
   );
@@ -60,5 +72,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 16,
     color: "red",
+  },
+  saveButton: {
+    marginTop: 24,
+    backgroundColor: "#007AFF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+  },
+  saveButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16,
   },
 });
