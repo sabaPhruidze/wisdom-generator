@@ -34,7 +34,13 @@ const FavoritesScreen = () => {
       </ThemedText>
       <FlatList
         data={savedAdvices}
-        keyExtractor={(item) => item.id.toString()} //returns string
+        keyExtractor={(item, index) =>
+          (item && typeof item.id === "number"
+            ? item.id
+            : Date.now()
+          ).toString()
+        }
+        //returns string
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
             <ThemedText>{item.advice}</ThemedText>
