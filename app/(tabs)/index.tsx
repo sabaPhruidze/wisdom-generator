@@ -24,7 +24,7 @@ export default function HomeScreen() {
       .catch((error) => {
         console.error(error);
         setAdviceSlip(null);
-        setError("კავშირის შეცდომა. სცადეთ თავიდან.");
+        setError("Connection error, try again later");
       })
       .finally(() => {
         setIsLoading(false);
@@ -43,10 +43,7 @@ export default function HomeScreen() {
       );
 
       if (isAlreadySaved) {
-        Alert.alert(
-          "Already saved!!!",
-          "This advice is already inside the ხომ არ არის ეს რჩევა უკვე შენახული"
-        );
+        Alert.alert("Already saved!!!", "This advice is already inside the ");
         return;
       }
       const newFavorites = [adviceSlip, ...favorites];
